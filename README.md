@@ -26,32 +26,8 @@ This project is a production-grade, multi-tenant full-stack web workspace design
 
 The platform backend is engineered following **Clean Layered Architecture** principles to isolate concerns, maximize testability, and decoupling data persistence from runtime execution routines.
 
-```text
-       ┌────────────────────────────────────────────────────────┐
-       │                   HTTP Request Layer                   │
-       └───────────────────────────┬────────────────────────────┘
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                Validation & Auth Guards                │ (Zod/Joi, Token Verification)
-       └───────────────────────────┬────────────────────────────┘
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                   Controller Layer                     │ (HTTP Parsing, Status Codes)
-       └───────────────────────────┬────────────────────────────┘
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                    Service Layer                       │ (Pure Business Logic & Rules)
-       └───────────────────────────┬────────────────────────────┘
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                  Repository Layer                      │ (Data Access/Abstraction)
-       └───────────────────────────┬────────────────────────────┘
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                   Database Layer                       │ (Mongoose / MongoDB Atlas)
-       └────────────────────────────────────────────────────────┘
+<img width="490"  alt="sisenco weekly reports" src="https://github.com/user-attachments/assets/dbd4b9cb-d001-4120-858d-345640bf4268" />
 
-```
 
 ### Architectural Subsystems
 
