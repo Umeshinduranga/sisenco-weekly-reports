@@ -1,17 +1,18 @@
 import { Router } from 'express';
-import { asyncHandler } from '../middleware/asyncHandler';
-import { requireAuth, requireRole } from '../middleware/auth';
+import { getAllProjects, createProject, updateProject, deleteProject } from '../controllers/projectController';
+import { protect, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validate';
-import { projectController } from '../controllers/projectController';
 import { projectCreateSchema, projectUpdateSchema } from '../validators/projectValidators';
 
 const router = Router();
 
-router.use(requireAuth);
+router.use(protect); // All routes require login
 
-router.get('/', asyncHandler(projectController.list));
-router.post('/', requireRole('manager'), validate(projectCreateSchema), asyncHandler(projectController.create));
-router.put('/:id', requireRole('manager'), validate(projectUpdateSchema), asyncHandler(projectController.update));
-router.delete('/:id', requireRole('manager'), asyncHandler(projectController.remove));
+router.get('/', getAllProjects); // Any authenticated user can view projects
+
+// ONLY Managers can modify projects
+router.post('/', authorize('manager'), validate(projectCreateSchema), createProject);
+router.put('/:id', authorize('manager'), validate(projectUpdateSchema), updateProject);
+router.delete('/:id', authorize('manager'), deleteProject);
 
 export default router;
