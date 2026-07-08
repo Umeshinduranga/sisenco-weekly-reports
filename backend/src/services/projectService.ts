@@ -1,29 +1,20 @@
-import { ApiError } from '../utils/ApiError';
 import { projectRepository } from '../repositories/projectRepository';
-import { ProjectCreateInput, ProjectUpdateInput } from '../validators/projectValidators';
+import { ApiError } from '../utils/ApiError';
 
 export const projectService = {
-  async list() {
-    return projectRepository.findAll();
-  },
-
-  async create(input: ProjectCreateInput, managerId: string) {
-    return projectRepository.create({ ...input, createdBy: managerId });
-  },
-
-  async update(id: string, input: ProjectUpdateInput) {
-    const project = await projectRepository.update(id, input);
-    if (!project) {
-      throw new ApiError(404, 'Project not found');
-    }
+  getAllProjects: async () => await projectRepository.findAll(),
+  
+  createProject: async (data: any) => await projectRepository.create(data),
+  
+  updateProject: async (id: string, data: any) => {
+    const project = await projectRepository.update(id, data);
+    if (!project) throw new ApiError(404, 'Project not found');
     return project;
   },
-
-  async remove(id: string) {
+  
+  deleteProject: async (id: string) => {
     const project = await projectRepository.delete(id);
-    if (!project) {
-      throw new ApiError(404, 'Project not found');
-    }
+    if (!project) throw new ApiError(404, 'Project not found');
     return project;
-  },
+  }
 };
