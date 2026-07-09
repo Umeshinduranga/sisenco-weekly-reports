@@ -3,23 +3,32 @@ import { ApiError } from '../utils/ApiError';
 import { generateToken } from '../utils/jwt';
 import bcrypt from 'bcrypt';
 
+const SALT_ROUNDS = 10;
+
 export const authService = {
-  register: async (data: any) => {
-    const { fullName, email, password, role } = data;
-    
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+  register: async (input: any) => {
+    const existing = await authRepository.findUserByEmail(input.email);
+    if (existing) {
+      throw new ApiError(409, 'An account with this email already exists');
+    }
+
+    const passwordHash = await bcrypt.hash(input.password, SALT_ROUNDS);
+
+    // Security: 'manager' role only granted if the correct invite code is provided.
+    // Any mismatch or missing code silently falls back to 'member' — never trust
+    // client input alone for privilege escalation.
+    const requestedManager = input.role === 'manager';
+    const validInviteCode = input.inviteCode === process.env.MANAGER_INVITE_CODE;
+    const finalRole = requestedManager && validInviteCode ? 'manager' : 'member';
 
     const user = await authRepository.createUser({
-      fullName,
-      email,
-      passwordHash: hashedPassword,
-      role: role || 'member'
+      fullName: input.fullName,
+      email: input.email,
+      passwordHash,
+      role: finalRole,
     });
 
     const token = generateToken(user._id.toString(), user.role);
-    // Return sanitized user (no passwordHash) + token
     const userObj = { _id: user._id, fullName: user.fullName, email: user.email, role: user.role };
     return { user: userObj, token };
   },
