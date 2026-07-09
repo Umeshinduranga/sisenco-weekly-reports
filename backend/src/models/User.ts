@@ -30,6 +30,13 @@ const userSchema = new Schema(
   }
 );
 
+userSchema.set('toJSON', {
+  transform: (_doc, ret: any) => {
+    delete ret.passwordHash;
+    return ret;
+  },
+});
+
 export type User = InferSchemaType<typeof userSchema>;
 const User = model('User', userSchema);
 export default User; // <-- Ensure it is exported as default
