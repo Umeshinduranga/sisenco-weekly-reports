@@ -61,8 +61,8 @@ Follow these precise steps to get the environment fully operational locally.
 ### Step 1: Clone and Extract the Repository
 
 ```bash
-git clone https://github.com/Umeshinduranga/sisenco-weekly-reports.git
-cd sisenco-weekly-reports
+git clone https://github.com/Umeshinduranga/TeamPulse.git
+cd TeamPulse
 
 ```
 
