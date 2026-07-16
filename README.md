@@ -6,6 +6,8 @@ Managers get a high-level dashboard with charts showing team compliance, work di
 
 **ER Diagram:** https://drive.google.com/file/d/17MXEq7x12XGyMGp8x0cIm8YzlQncR7dz/view?usp=sharing
 
+**Demo video link:** https://drive.google.com/file/d/1ZNPvz9HadNPhX2wxwv-DrW7Ykl1s4Fsw/view?usp=sharing
+
 ---
 
 ## Features
